@@ -13,7 +13,7 @@
     "start": "node dist/server.js",
     "lint": "eslint 'src/**/*.ts' --max-warnings=0",
     "format": "prettier --write 'src/**/*.ts' 'tests/**/*.ts'",
-  "test": "jest",
+    "test": "jest",
     "prepare": "husky install"
   },
   "repository": {
