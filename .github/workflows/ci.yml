@@ -8,6 +8,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: test-password
+          POSTGRES_USER: test-user
+          POSTGRES_DB: subscription_orchestrator
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5433:5432
+    env:
+      DATABASE_URL: postgresql://test-user:test-password@localhost:5433/subscription_orchestrator
     steps: 
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,6 +31,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm install
+      - run: npm run prisma:migrate:dev
       - run: npm run lint
       - run: npm run build
       - run: npm run test
